@@ -41,7 +41,6 @@ echo
 while true; do
     read -p "Please choose your CPU's architecture(default=26):" subarch
 
-    echo $subarch
 
     if [ -z $subarch ]
     then
@@ -59,6 +58,56 @@ while true; do
             ;;
     esac
 done
+
+# Ask user if they would like a custom kernel and setup for generic, intel or amd
+echo
+echo Would you like to use my custom configuration or the manjaro configuration?
+
+while true; do
+	read -p "CUSTOM=1, MANJARO=2 (default=1):" custom
+
+	case $custom in
+		1) case $subarch in
+			[1-9]) manufact=".amd";     break
+			;;
+		       1[0-1]) manufact=".amd";     break
+		        ;;
+		       1[2-9]) manufact=".intel";   break
+			;;
+		      2[0-25]) manufact=".intel";   break
+			;;
+		           26) manufact=".generic.custom"; break
+		        ;;
+			   27) manufact=".native.custom";  break
+			;;
+			    *) echo "Ughh.. something went wrong this should have already been checked!"
+		        ;;
+	           esac
+		;;
+
+	        2) if [ "$subarch" -eq "27" ]
+                   then
+	               manufact=".native"
+	               break
+                   else
+                       manufact=".generic" 
+	               break
+                   fi
+		;;
+
+	        *) if [ $subarch -eq 27 ]
+		   then 
+		       manufact=".native.custom"
+		       break
+	           else
+		       manufact=".generic.custom"
+	               break
+	           fi
+		;;
+        esac
+done
+
+echo $manufact		       
 
 # Set architecture string using subarch char
 
@@ -149,6 +198,7 @@ done
 
 echo
 echo "You chose architecture ${architect}"
+echo "You chose option ${custom} for your configuration"
 echo
 
 pkgbase=ck-linux414
@@ -174,7 +224,8 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/linux-${_basekernel}.tar.x
         #linux-${_basekernel}${_rc}${_shortgit}-${pkgrel}.tar.gz::https://github.com/torvalds/linux/archive/${_git}.tar.gz
         "http://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
         # the main kernel config files
-        'config.x86_64' 'config' 'config.aufs'
+        
+        'config.x86_64.generic' 'config' 'config.aufs'
         "${pkgbase}.preset" # standard config files for mkinitcpio ramdisk
         '60-linux.hook'     # pacman hook for depmod
         '90-linux.hook'     # pacman hook for initramfs regeneration
@@ -226,12 +277,17 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/linux-${_basekernel}.tar.x
         # gcc optimization patch
         'enable_additional_cpu_optimizations_for_gcc_v8.1+_kernel_v4.13+.patch'
 
-	#original config with MuQSS parameters turned on
-	'config.x86_64.orig'
-)
+
+	# My custom configs for intel and amd and native
+	'config.x86_64.intel'
+	'config.x86_64.amd'
+	'config.x86_64.native'
+        'config.x86_64.native.custom'
+	'config.x86_64.generic.custom')
+
 sha256sums=('f81d59477e90a130857ce18dc02f4fbe5725854911db1e7ba770c7cd350f96a7'
             '5f262dec41dc6e792123e3dc1f1c5a8dcb8d31629a874559540bf742aa8cc86f'
-	    '2bee2188bd1f914459f9477e5c29b63f4d722d09bbe344bfde9b9b60687361e6'
+	    '4f81147a6ab5ec143a5e128b377abc9419597ebb0767c27cde10be2034ac65d4'
             '03bcfef52aea8159563d31b1012d6bcfff6b79d216d02b989c0b913612a9be68'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
             '43942683a7ff01b180dff7f3de2db4885d43ab3d4e7bd0e1918c3aaf2ee061f4'
@@ -274,7 +330,12 @@ sha256sums=('f81d59477e90a130857ce18dc02f4fbe5725854911db1e7ba770c7cd350f96a7'
             '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef'
 	    '6a07ad7af129d54a3289bea40524855c1527f5b15d36108102db575d07930932'
             '9f7177679c8d3f8d699ef0566a51349d828436dba04603bc2223f98c60d2d178'
-	    'ea343f03e95b6b6c25c478353ca6e183f542dc2af2422de0d0ea41b455230092')
+	    '313cd41a04c6ce9adeba271f6abf9497a8bf75b78e2250ea66c42d6fa08aface'
+	    '5823f09b2891dc20c2a881c87a0cacf54f7cdd4866742430a4f4dadf65ab9724'
+	    '59ee7ee7470afae4dd4901cfe53b8e18da9a101d4ffbbae7547861aaa6f25ed2'
+	    'bd0ee8943bb097c326b83b761cc5ef25d5c433c48f0f191f59710fffff119b55'
+	    '2bee2188bd1f914459f9477e5c29b63f4d722d09bbe344bfde9b9b60687361e6'
+	    )
 prepare() {
   #mv "${srcdir}/linux-${_git}" "${srcdir}/linux-${_basekernel}"
   #mv "${srcdir}/linux-${_basekernel}-${_rc}" "${srcdir}/linux-${_basekernel}"
@@ -358,11 +419,11 @@ prepare() {
   #patch -Np1 -i "${srcdir}/0001-BFQ-${_bfq}-v${pkgver}.patch"
   patch -Np1 -i "${srcdir}/0001-BFQ-${_bfq}-${_bfqdate}.patch"
   patch -Np1 -i "${srcdir}/0002-BFQ-${_bfq}-${_bfqdate2}.patch"
-
+  
   if [ "${CARCH}" = "x86_64" ]; then
-    cat "${srcdir}/config.x86_64" > ./.config
+    cat "${srcdir}/config.x86_64${manufact}" > ./.config
   else
-    cat "${srcdir}/config" > ./.config
+	  cat "${srcdir}/config${manufact}" > ./.config
   fi
 
   cat "${srcdir}/config.aufs" >> ./.config

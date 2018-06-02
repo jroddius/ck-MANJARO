@@ -1,4 +1,4 @@
-# Based on the file created for Arch Linux by:
+#Based on the file created for Arch Linux by:
 # Tobias Powalowski <tpowa@archlinux.org>
 # Thomas Baechler <thomas@archlinux.org>
 
@@ -6,16 +6,57 @@
 # Maintainer: Guinux <guillaume@manjaro.org>
 # Maintainer: Rob McCathie <rob@manjaro.org>
 
-pkgbase=linux414
-pkgname=('linux414' 'linux414-headers')
-_kernelname=-MANJARO
+# Optionally select a sub architecture by number if building in a clean chroot
+# Leaving this entry blank will require user interaction during the build 
+# which will cause a failure to build if using makechrootpkg. Note that the
+# generic (default) option is 24.
+#
+#  1. AMD Opteron/Athlon64/Hammer/K8 (MK8)
+#  2. AMD Opteron/Athlon64/Hammer/K8 with SSE3 (MK8SSE3)
+#  3. AMD 61xx/7x50/PhenomX3/X4/II/K10 (MK10)
+#  4. AMD Barcelona (MBARCELONA)
+#  5. AMD Bobcat (MBOBCAT)
+#  6. AMD Jaguar (MJAGUAR)
+#  7. AMD Bulldozer (MBULLDOZER)
+#  8. AMD Piledriver (MPILEDRIVER)
+#  9. AMD Steamroller (MSTEAMROLLER)
+#  10. AMD Excavator (MEXCAVATOR)
+#  11. AMD Zen (MZEN)
+#  12. Intel P4 / older Netburst based Xeon (MPSC)
+#  13. Intel Atom (MATOM)
+#  14. Intel Core 2 (MCORE2)
+#  15. Intel Nehalem (MNEHALEM)
+#  16. Intel Westmere (MWESTMERE)
+#  17. Intel Silvermont (MSILVERMONT)
+#  18. Intel Sandy Bridge (MSANDYBRIDGE)
+#  19. Intel Ivy Bridge (MIVYBRIDGE)
+#  20. Intel Haswell (MHASWELL)
+#  21. Intel Broadwell (MBROADWELL)
+#  22. Intel Skylake (MSKYLAKE)
+#  23. Intel Skylake X (MSKYLAKEX)
+#  24. Intel Cannon Lake (MCANNONLAKE)
+#  25. Intel Ice Lake (MICELAKE)
+#  26. Generic-x86-64 (GENERIC_CPU)
+#  27. Native optimizations autodetected by GCC (MNATIVE)
+subarch=20
+
+#saying yes on the line below disables NUMA. NUMA is only good for servers.
+#this is a desktop kernel. you may disable if you like but if you are running
+#a server, I would suggest you pick another cpu scheduler. Something more suitable 
+#for a server like Kyber or the traditional CFS.
+NUMAdisable=y
+
+
+pkgbase=ck-linux414
+pkgname=('ck-linux414' 'ck-linux414-headers')
+_kernelname=-ck-MANJARO
 _basekernel=4.14
 _basever=414
 _aufs=20180409
 _bfq=v8r12
 _bfqdate=20171108
 _bfqdate2=20180404
-_sub=47
+_sub=44
 pkgver=${_basekernel}.${_sub}
 pkgrel=1
 arch=('i686' 'x86_64')
@@ -47,6 +88,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/linux-${_basekernel}.tar.x
         0002-BFQ-${_bfq}-${_bfqdate2}.patch
         # ARCH Patches
         0001-add-sysctl-to-disallow-unprivileged-CLONE_NEWUSER-by.patch
+	0002-ACPI-watchdog-Prefer-iTCO_wdt-on-Lenovo-Z50-70.patch
         # MANJARO Patches
         '0001-drm-i915-edp-Only-use-the-alternate-fixed-mode-if-it.patch'
         '0001-synaptics-lenovo-t460p.patch'
@@ -75,9 +117,13 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/linux-${_basekernel}.tar.x
         'https://github.com/philmmanjaro/linux-bootsplash/raw/v4.14/0011-bootsplash.patch'
         'https://github.com/philmmanjaro/linux-bootsplash/raw/v4.14/0012-bootsplash.patch'
         'https://github.com/philmmanjaro/linux-bootsplash/raw/v4.14/0013-bootsplash.patch'
+        #MuQSS patch
+        '4.14-sched-MuQSS_162.patch'
+        # gcc optimization patch
+        'enable_additional_cpu_optimizations_for_gcc_v8.1+_kernel_v4.13+.patch'
 )
 sha256sums=('f81d59477e90a130857ce18dc02f4fbe5725854911db1e7ba770c7cd350f96a7'
-            '2c4dddd0e4b43b6aefd65dcd99db1d3c063c1a3455450f74bcad05a40c9ed024'
+            '5f262dec41dc6e792123e3dc1f1c5a8dcb8d31629a874559540bf742aa8cc86f'
             '11861422af1696429c4310c05795ae4e16e7804db46d55e569ddd93397e87bdd'
             '03bcfef52aea8159563d31b1012d6bcfff6b79d216d02b989c0b913612a9be68'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
@@ -91,10 +137,11 @@ sha256sums=('f81d59477e90a130857ce18dc02f4fbe5725854911db1e7ba770c7cd350f96a7'
             'c3f59316c841bb3fa02af61f62080deacbc0850787729c0ff536d86a64693623'
             '17db02391a629438494d1a606491463c7291dbe74be225d4d4c90003055736c6'
             '98fb4b9d4d7fe5957e566186892b10e3b3026450ee56d7bd335b74de3abae43d'
-            '9c5a586a53d6becdab560226adea14c1db5e5a0ab8e3ffd75f894827c1b08365'
-            '5ac0d9fb774ed038c5537c59836b389bb64bdb50a01f32d0ee8ae03159ca9198'
+	    '9c5a586a53d6becdab560226adea14c1db5e5a0ab8e3ffd75f894827c1b08365'
+	    '5ac0d9fb774ed038c5537c59836b389bb64bdb50a01f32d0ee8ae03159ca9198'
             'f51c1b8709bf9f0e642ebd12d48ee1ac41047902a87cf6a783ca794cfa5142dc'
             '37b86ca3de148a34258e3176dbf41488d9dbd19e93adbd22a062b3c41332ce85'
+	    '2454c1ee5e0f5aa119fafb4c8d3b402c5e4e10b2e868fe3e4ced3b1e2aa48446'
             'c08d12c699398ef88b764be1837b9ee11f2efd3188bd1bf4e8f85dfbeee58148'
             '2fc534377b4059faa3291a93f193f77f44e7a20237d8c4528d8828f48fc94c7f'
             '61abfab9093bdfec4edda3586fd05afe2f488a92ca99cff51c36b359acdcc815'
@@ -117,7 +164,9 @@ sha256sums=('f81d59477e90a130857ce18dc02f4fbe5725854911db1e7ba770c7cd350f96a7'
             'e9f22cbb542591087d2d66dc6dc912b1434330ba3cd13d2df741d869a2c31e89'
             '27471eee564ca3149dd271b0817719b5565a9594dc4d884fe3dc51a5f03832bc'
             '60e295601e4fb33d9bf65f198c54c7eb07c0d1e91e2ad1e0dd6cd6e142cb266d'
-            '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef')
+            '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef'
+	    '6a07ad7af129d54a3289bea40524855c1527f5b15d36108102db575d07930932'
+            '9f7177679c8d3f8d699ef0566a51349d828436dba04603bc2223f98c60d2d178')
 prepare() {
   #mv "${srcdir}/linux-${_git}" "${srcdir}/linux-${_basekernel}"
   #mv "${srcdir}/linux-${_basekernel}-${_rc}" "${srcdir}/linux-${_basekernel}"
@@ -131,6 +180,11 @@ prepare() {
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
   # enable only if you have "gen-stable-queue-patch.sh" executed before
   #patch -Np1 -i "${srcdir}/prepatch-${_basekernel}.patch"
+
+  # MuQSS patch
+  patch -p1 -i '../4.14-sched-MuQSS_162.patch'
+  # gcc optimization
+  patch -p1 -i '../enable_additional_cpu_optimizations_for_gcc_v8.1+_kernel_v4.13+.patch'
 
   # gcc8 ojtool patches
   msg "gcc8 objtool patches..."
@@ -213,6 +267,21 @@ prepare() {
   # set extraversion to pkgrel
   sed -ri "s|^(EXTRAVERSION =).*|\1 -${pkgrel}|" Makefile
 
+  ### Optionally disable NUMA
+  if [ -n "$_NUMAdisable" ]; then
+   msg "Disabling NUMA from kernel config..."
+   sed -i -e 's/CONFIG_NUMA=y/# CONFIG_NUMA is not set/' \
+       -i -e '/CONFIG_AMD_NUMA=y/d' \
+       -i -e '/CONFIG_X86_64_ACPI_NUMA=y/d' \
+       -i -e '/CONFIG_NODES_SPAN_OTHER_NODES=y/d' \
+       -i -e '/# CONFIG_NUMA_EMU is not set/d' \
+       -i -e '/CONFIG_NODES_SHIFT=6/d' \
+       -i -e '/CONFIG_NEED_MULTIPLE_NODES=y/d' \
+       -i -e '/# CONFIG_MOVABLE_NODE is not set/d' \
+       -i -e '/CONFIG_USE_PERCPU_NUMA_NODE_ID=y/d' \
+       -i -e '/CONFIG_ACPI_NUMA=y/d' ./.config
+   fi
+
   # don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
 
@@ -221,7 +290,7 @@ prepare() {
 
   # load configuration
   # Configure the kernel. Replace the line below with one of your choice.
-  #make menuconfig # CLI menu for configuration
+  make menuconfig # CLI menu for configuration
   #make nconfig # new CLI menu for configuration
   #make xconfig # X-based configuration
   #make oldconfig # using old config from previous kernel version
@@ -238,7 +307,7 @@ build() {
   make ${MAKEFLAGS} LOCALVERSION= bzImage modules
 }
 
-package_linux414() {
+package_ck-linux414() {
   pkgdesc="The ${pkgbase/linux/Linux} kernel and modules"
   depends=('coreutils' 'linux-firmware' 'kmod' 'mkinitcpio>=0.7')
   optdepends=('crda: to set the correct wireless channels of your country')
@@ -295,7 +364,7 @@ package_linux414() {
   true && install=${install}.pkg
 
   # install mkinitcpio preset file
-  sed "${_subst}" ${srcdir}/linux414.preset |
+  sed "${_subst}" ${srcdir}/${pkgbase}.preset |
     install -Dm644 /dev/stdin "${pkgdir}/etc/mkinitcpio.d/${pkgbase}.preset"
 
   # install pacman hooks
@@ -305,7 +374,7 @@ package_linux414() {
     install -Dm644 /dev/stdin "${pkgdir}/usr/share/libalpm/hooks/90-${pkgbase}.hook"
 }
 
-package_linux414-headers() {
+package_ck-linux414-headers() {
   pkgdesc="Header files and scripts for building modules for ${pkgbase/linux/Linux} kernel"
   provides=("linux-headers=$pkgver")
 

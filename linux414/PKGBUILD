@@ -6,46 +6,150 @@
 # Maintainer: Guinux <guillaume@manjaro.org>
 # Maintainer: Rob McCathie <rob@manjaro.org>
 
-# Optionally select a sub architecture by number if building in a clean chroot
-# Leaving this entry blank will require user interaction during the build 
-# which will cause a failure to build if using makechrootpkg. Note that the
-# generic (default) option is 24.
-#
-#  1. AMD Opteron/Athlon64/Hammer/K8 (MK8)
-#  2. AMD Opteron/Athlon64/Hammer/K8 with SSE3 (MK8SSE3)
-#  3. AMD 61xx/7x50/PhenomX3/X4/II/K10 (MK10)
-#  4. AMD Barcelona (MBARCELONA)
-#  5. AMD Bobcat (MBOBCAT)
-#  6. AMD Jaguar (MJAGUAR)
-#  7. AMD Bulldozer (MBULLDOZER)
-#  8. AMD Piledriver (MPILEDRIVER)
-#  9. AMD Steamroller (MSTEAMROLLER)
-#  10. AMD Excavator (MEXCAVATOR)
-#  11. AMD Zen (MZEN)
-#  12. Intel P4 / older Netburst based Xeon (MPSC)
-#  13. Intel Atom (MATOM)
-#  14. Intel Core 2 (MCORE2)
-#  15. Intel Nehalem (MNEHALEM)
-#  16. Intel Westmere (MWESTMERE)
-#  17. Intel Silvermont (MSILVERMONT)
-#  18. Intel Sandy Bridge (MSANDYBRIDGE)
-#  19. Intel Ivy Bridge (MIVYBRIDGE)
-#  20. Intel Haswell (MHASWELL)
-#  21. Intel Broadwell (MBROADWELL)
-#  22. Intel Skylake (MSKYLAKE)
-#  23. Intel Skylake X (MSKYLAKEX)
-#  24. Intel Cannon Lake (MCANNONLAKE)
-#  25. Intel Ice Lake (MICELAKE)
-#  26. Generic-x86-64 (GENERIC_CPU)
-#  27. Native optimizations autodetected by GCC (MNATIVE)
-subarch=20
+echo
+echo "List of Architectures"
+echo 
+echo "1. AMD Opteron/Athlon64/Hammer/K8 (MK8)"
+echo "2. AMD Opteron/Athlon64/Hammer/K8 with SSE3 (MK8SSE3)"
+echo "3. AMD 61xx/7x50/PhenomX3/X4/II/K10 (MK10)"
+echo "4. AMD Barcelona (MBARCELONA)"
+echo "5. AMD Bobcat (MBOBCAT)"
+echo "6. AMD Jaguar (MJAGUAR)"
+echo "7. AMD Bulldozer (MBULLDOZER)"
+echo "8. AMD Piledriver (MPILEDRIVER)"
+echo "9. AMD Steamroller (MSTEAMROLLER)"
+echo "10. AMD Excavator (MEXCAVATOR)"
+echo "11. AMD Zen (MZEN)"
+echo "12. Intel P4 / older Netburst based Xeon (MPSC)"
+echo "13. Intel Atom (MATOM)"
+echo "14. Intel Core 2 (MCORE2)"
+echo "15. Intel Nehalem (MNEHALEM)"
+echo "16. Intel Westmere (MWESTMERE)"
+echo "17. Intel Silvermont (MSILVERMONT)"
+echo "18. Intel Sandy Bridge (MSANDYBRIDGE)"
+echo "19. Intel Ivy Bridge (MIVYBRIDGE)"
+echo "20. Intel Haswell (MHASWELL)"
+echo "21. Intel Broadwell (MBROADWELL)"
+echo "22. Intel Skylake (MSKYLAKE)"
+echo "23. Intel Skylake X (MSKYLAKEX)"
+echo "24. Intel Cannon Lake (MCANNONLAKE)"
+echo "25. Intel Ice Lake (MICELAKE)"
+echo "26. Generic-x86-64 (GENERIC_CPU)"
+echo "27. Native optimizations autodetected by GCC (MNATIVE)"
+echo
 
-#saying yes on the line below disables NUMA. NUMA is only good for servers.
-#this is a desktop kernel. you may disable if you like but if you are running
-#a server, I would suggest you pick another cpu scheduler. Something more suitable 
-#for a server like Kyber or the traditional CFS.
-NUMAdisable=y
+while true; do
+    read -p "Please choose your CPU's architecture(default=26):" subarch
 
+    echo $subarch
+
+    if [ -z $subarch ]
+    then
+	    subarch=26
+	    break
+    fi
+    case $subarch in
+	    [1-9]) break
+            ;;
+            1[0-9]) break
+	    ;;
+            2[0-7]) break
+	    ;;
+            * ) echo "Enter only numbers 1-27!"
+            ;;
+    esac
+done
+
+# Set architecture string using subarch char
+
+	  case ${subarch} in
+ 	 	1)
+			 architect=MK8
+			 ;;
+	         2)
+			 architect=MK8SSE3
+			 ;;
+        	 3)
+			 architect=MK10
+			 ;;
+		 4)
+			 architect=MBARCELONA
+			 ;;
+		 5)
+			 architect=MBOBCAT
+			 ;;
+		 6)
+			 architect=MJAGUAR
+			 ;;
+		 7)
+			 architect=MBULLDOZER
+			 ;;
+		 8)
+			 architect=MPILEDRIVER
+			 ;;
+		 9)
+			 architect=MSTEAMROLLER
+			 ;;
+		10)
+			architect=MEXCAVATOR
+			;;
+	        11)
+			architect=MZEN
+			;;
+	        12)
+			architect=MPSC
+			;;
+        	13)
+			architect=MATOM
+			;;
+		14)
+			architect=MCORE2
+			;;
+		15)
+			architect=MNEHALEM
+			;;
+		16)
+			architect=MWESTMERE
+			;;
+		17)
+			architect=MSILVERMONT
+			;;
+		18)
+			architect=MSANDYBRIDGE
+			;;
+		19)
+			architect=MIVYBRIDGE
+			;;
+		20)
+			architect=MHASWELL
+			;;
+		21)
+			architect=MBROADWELL
+			;;
+		22)
+			architect=MSKYLAKE
+			;;
+		23)
+			architect=MSKYLAKEX
+			;;
+		24)
+			architect=MCANNONLAKE
+			;;
+		25)
+			architect=MICELAKE
+			;;
+	        26)
+			architect=GENERIC_CPU
+			;;
+	        27)
+			architect=MNATIVE
+			;;
+	 esac
+
+
+echo
+echo "You chose architecture ${architect}"
+echo
 
 pkgbase=ck-linux414
 pkgname=('ck-linux414' 'ck-linux414-headers')
@@ -121,10 +225,13 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/linux-${_basekernel}.tar.x
         '4.14-sched-MuQSS_162.patch'
         # gcc optimization patch
         'enable_additional_cpu_optimizations_for_gcc_v8.1+_kernel_v4.13+.patch'
+
+	#original config with MuQSS parameters turned on
+	'config.x86_64.orig'
 )
 sha256sums=('f81d59477e90a130857ce18dc02f4fbe5725854911db1e7ba770c7cd350f96a7'
             '5f262dec41dc6e792123e3dc1f1c5a8dcb8d31629a874559540bf742aa8cc86f'
-            '11861422af1696429c4310c05795ae4e16e7804db46d55e569ddd93397e87bdd'
+	    '2bee2188bd1f914459f9477e5c29b63f4d722d09bbe344bfde9b9b60687361e6'
             '03bcfef52aea8159563d31b1012d6bcfff6b79d216d02b989c0b913612a9be68'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
             '43942683a7ff01b180dff7f3de2db4885d43ab3d4e7bd0e1918c3aaf2ee061f4'
@@ -166,7 +273,8 @@ sha256sums=('f81d59477e90a130857ce18dc02f4fbe5725854911db1e7ba770c7cd350f96a7'
             '60e295601e4fb33d9bf65f198c54c7eb07c0d1e91e2ad1e0dd6cd6e142cb266d'
             '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef'
 	    '6a07ad7af129d54a3289bea40524855c1527f5b15d36108102db575d07930932'
-            '9f7177679c8d3f8d699ef0566a51349d828436dba04603bc2223f98c60d2d178')
+            '9f7177679c8d3f8d699ef0566a51349d828436dba04603bc2223f98c60d2d178'
+	    'ea343f03e95b6b6c25c478353ca6e183f542dc2af2422de0d0ea41b455230092')
 prepare() {
   #mv "${srcdir}/linux-${_git}" "${srcdir}/linux-${_basekernel}"
   #mv "${srcdir}/linux-${_basekernel}-${_rc}" "${srcdir}/linux-${_basekernel}"
@@ -259,29 +367,17 @@ prepare() {
 
   cat "${srcdir}/config.aufs" >> ./.config
 
+  #patch .config for cpu optimization using architect string
+    sed -i -e "s/# CONFIG_${architect} is not set/CONFIG_${architect}=y/g" ./.config
+
   if [ "${_kernelname}" != "" ]; then
     sed -i "s|CONFIG_LOCALVERSION=.*|CONFIG_LOCALVERSION=\"${_kernelname}\"|g" ./.config
-    sed -i "s|CONFIG_LOCALVERSION_AUTO=.*|CONFIG_LOCALVERSION_AUTO=n|" ./.config
+#    sed -i "s|CONFIG_LOCALVERSION_AUTO=.*|CONFIG_LOCALVERSION_AUTO=n|" ./.config
   fi
 
   # set extraversion to pkgrel
   sed -ri "s|^(EXTRAVERSION =).*|\1 -${pkgrel}|" Makefile
-
-  ### Optionally disable NUMA
-  if [ -n "$_NUMAdisable" ]; then
-   msg "Disabling NUMA from kernel config..."
-   sed -i -e 's/CONFIG_NUMA=y/# CONFIG_NUMA is not set/' \
-       -i -e '/CONFIG_AMD_NUMA=y/d' \
-       -i -e '/CONFIG_X86_64_ACPI_NUMA=y/d' \
-       -i -e '/CONFIG_NODES_SPAN_OTHER_NODES=y/d' \
-       -i -e '/# CONFIG_NUMA_EMU is not set/d' \
-       -i -e '/CONFIG_NODES_SHIFT=6/d' \
-       -i -e '/CONFIG_NEED_MULTIPLE_NODES=y/d' \
-       -i -e '/# CONFIG_MOVABLE_NODE is not set/d' \
-       -i -e '/CONFIG_USE_PERCPU_NUMA_NODE_ID=y/d' \
-       -i -e '/CONFIG_ACPI_NUMA=y/d' ./.config
-   fi
-
+    
   # don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
 

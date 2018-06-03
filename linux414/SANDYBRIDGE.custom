@@ -38,7 +38,7 @@
 #  26. Generic-x86-64 (GENERIC_CPU)
 #  27. Native optimizations autodetected by GCC (MNATIVE)
 
-subarch=26
+subarch=18
 
 while true; do
     case $subarch in
@@ -54,7 +54,7 @@ while true; do
 done
 
 # If you would like to use my custom kernel choose custom=1 here otherwise choose custom=2 for mostly MANJARO config
-custom=2
+custom=1
 
 while true; do
 	case $custom in

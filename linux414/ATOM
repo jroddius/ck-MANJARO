@@ -38,7 +38,7 @@
 #  26. Generic-x86-64 (GENERIC_CPU)
 #  27. Native optimizations autodetected by GCC (MNATIVE)
 
-subarch=26
+subarch=13
 
 while true; do
     case $subarch in

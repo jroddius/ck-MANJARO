@@ -64,7 +64,7 @@ echo
 echo Would you like to use my custom configuration or the manjaro configuration?
 
 while true; do
-	read -p "CUSTOM=1, MANJARO=2 (default=1):" custom
+	read -p "CUSTOM=1, MANJARO=2:" custom
 
 	case $custom in
 		1) case $subarch in
@@ -95,14 +95,7 @@ while true; do
                    fi
 		;;
 
-	        *) if [ $subarch -eq 27 ]
-		   then 
-		       manufact=".native.custom"
-		       break
-	           else
-		       manufact=".generic.custom"
-	               break
-	           fi
+	        *) echo "Please enter 1 or 2 only!"
 		;;
         esac
 done

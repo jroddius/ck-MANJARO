@@ -267,8 +267,9 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/linux-${_basekernel}.tar.x
         'https://github.com/philmmanjaro/linux-bootsplash/raw/v4.14/0013-bootsplash.patch'
         #MuQSS patch
         '4.14-sched-MuQSS_162.patch'
+
         # gcc optimization patch
-        'enable_additional_cpu_optimizations_for_gcc_v8.1+_kernel_v4.13+.patch'
+	'https://raw.githubusercontent.com/graysky2/kernel_gcc_patch/master/enable_additional_cpu_optimizations_for_gcc_v8.1%2B_kernel_v4.13%2B.patch'
 
 
 	# My custom configs for intel and amd and native
@@ -346,7 +347,7 @@ prepare() {
   # MuQSS patch
   patch -p1 -i '../4.14-sched-MuQSS_162.patch'
   # gcc optimization
-  patch -p1 -i '../enable_additional_cpu_optimizations_for_gcc_v8.1+_kernel_v4.13+.patch'
+  patch -p1 -i '../enable_additional_cpu_optimizations_for_gcc_v8.1%2B_kernel_v4.13%2B.patch'
 
   # gcc8 ojtool patches
   msg "gcc8 objtool patches..."

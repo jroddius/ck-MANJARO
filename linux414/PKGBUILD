@@ -314,10 +314,10 @@ sha256sums=('f81d59477e90a130857ce18dc02f4fbe5725854911db1e7ba770c7cd350f96a7'
             '313cd41a04c6ce9adeba271f6abf9497a8bf75b78e2250ea66c42d6fa08aface'
             '5823f09b2891dc20c2a881c87a0cacf54f7cdd4866742430a4f4dadf65ab9724'
             '59ee7ee7470afae4dd4901cfe53b8e18da9a101d4ffbbae7547861aaa6f25ed2'
-            'bd0ee8943bb097c326b83b761cc5ef25d5c433c48f0f191f59710fffff119b55'
-            '2bee2188bd1f914459f9477e5c29b63f4d722d09bbe344bfde9b9b60687361e6')
+	    'add0b0d58a1069a2baabae9a6c0fb0b3978ae79707101ee3c1296e139fda6df2'
+            'fb5734e70bb3fb06ef558c46bf676947f07332d2ef29cfdcb547ab91e0491b77')
 
-prepare() {
+  prepare() {
   #mv "${srcdir}/linux-${_git}" "${srcdir}/linux-${_basekernel}"
   #mv "${srcdir}/linux-${_basekernel}-${_rc}" "${srcdir}/linux-${_basekernel}"
   cd "${srcdir}/linux-${_basekernel}"

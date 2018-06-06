@@ -1,4 +1,4 @@
-#Based on the file created for Arch Linux by:
+# Based on the file created for Arch Linux by:
 # Tobias Powalowski <tpowa@archlinux.org>
 # Thomas Baechler <thomas@archlinux.org>
 
@@ -6,7 +6,7 @@
 # Maintainer: Guinux <guillaume@manjaro.org>
 # Maintainer: Rob McCathie <rob@manjaro.org>
 
-   #put together with file from https://github.com/raymond-w-ko/pkgbuilds/blob/master/linux-ck/PKGBUILD
+#put together with file from https://github.com/raymond-w-ko/pkgbuilds/blob/master/linux-ck/PKGBUILD
 
 #choose your subarch below this list of subarches
 
@@ -38,7 +38,8 @@
 #  26. Generic-x86-64 (GENERIC_CPU)
 #  27. Native optimizations autodetected by GCC (MNATIVE)
 
-subarch=26
+#put your choice from the above list here 
+subarch=20
 
 while true; do
     case $subarch in
@@ -54,22 +55,22 @@ while true; do
 done
 
 # If you would like to use my custom kernel choose custom=1 here otherwise choose custom=2 for mostly MANJARO config
-custom=2
+custom=1
 
 while true; do
 	case $custom in
 		1) case $subarch in
-			[1-9]) manufact=".amd";     break
+			[1-9]) manufact="amd";     break
 			;;
-		       1[0-1]) manufact=".amd";     break
+		       1[0-1]) manufact="amd";     break
 		        ;;
-		       1[2-9]) manufact=".intel";   break
+		       1[2-9]) manufact="intel";   break
 			;;
-		      2[0-25]) manufact=".intel";   break
+		      2[0-25]) manufact="intel";   break
 			;;
-		           26) manufact=".generic.custom"; break
+		           26) manufact="generic.custom"; break
 		        ;;
-			   27) manufact=".native.custom";  break
+			   27) manufact="native.custom";  break
 			;;
 			    *) echo "Ughh.. something went wrong this should have already been checked!"; exit
 		        ;;
@@ -187,15 +188,15 @@ echo
 
 pkgbase=ck-linux414
 pkgname=('ck-linux414' 'ck-linux414-headers')
-_kernelname=-ck-MANJARO
+_kernelname='-ck-MANJARO'
 _basekernel=4.14
 _basever=414
 _aufs=20180409
 _bfq=v8r12
 _bfqdate=20171108
 _bfqdate2=20180404
-_sub=44
-pkgver=${_basekernel}.${_sub}
+_sub=47
+pkgver=${_basekernel}.${_sub}.1
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
@@ -206,9 +207,8 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/linux-${_basekernel}.tar.x
         #"https://git.kernel.org/torvalds/t/linux-${_basekernel}-${_rc}.tar.gz"
         #https://github.com/torvalds/linux/archive/v${_basekernel}.tar.gz
         #linux-${_basekernel}${_rc}${_shortgit}-${pkgrel}.tar.gz::https://github.com/torvalds/linux/archive/${_git}.tar.gz
-        "http://www.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.xz"
+        "http://www.kernel.org/pub/linux/kernel/v4.x/patch-${_basekernel}.${_sub}.xz"
         # the main kernel config files
-        
         'config.x86_64.generic' 'config' 'config.aufs'
         "${pkgbase}.preset" # standard config files for mkinitcpio ramdisk
         '60-linux.hook'     # pacman hook for depmod
@@ -227,7 +227,6 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/linux-${_basekernel}.tar.x
         0002-BFQ-${_bfq}-${_bfqdate2}.patch
         # ARCH Patches
         0001-add-sysctl-to-disallow-unprivileged-CLONE_NEWUSER-by.patch
-	0002-ACPI-watchdog-Prefer-iTCO_wdt-on-Lenovo-Z50-70.patch
         # MANJARO Patches
         '0001-drm-i915-edp-Only-use-the-alternate-fixed-mode-if-it.patch'
         '0001-synaptics-lenovo-t460p.patch'
@@ -256,6 +255,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/linux-${_basekernel}.tar.x
         'https://github.com/philmmanjaro/linux-bootsplash/raw/v4.14/0011-bootsplash.patch'
         'https://github.com/philmmanjaro/linux-bootsplash/raw/v4.14/0012-bootsplash.patch'
         'https://github.com/philmmanjaro/linux-bootsplash/raw/v4.14/0013-bootsplash.patch'
+
         #MuQSS patch
         '4.14-sched-MuQSS_162.patch'
 
@@ -271,8 +271,8 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/linux-${_basekernel}.tar.x
 	'config.x86_64.generic.custom')
 
 sha256sums=('f81d59477e90a130857ce18dc02f4fbe5725854911db1e7ba770c7cd350f96a7'
-            '5f262dec41dc6e792123e3dc1f1c5a8dcb8d31629a874559540bf742aa8cc86f'
-	    '4f81147a6ab5ec143a5e128b377abc9419597ebb0767c27cde10be2034ac65d4'
+            '2c4dddd0e4b43b6aefd65dcd99db1d3c063c1a3455450f74bcad05a40c9ed024'
+            '11861422af1696429c4310c05795ae4e16e7804db46d55e569ddd93397e87bdd'
             '03bcfef52aea8159563d31b1012d6bcfff6b79d216d02b989c0b913612a9be68'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
             '43942683a7ff01b180dff7f3de2db4885d43ab3d4e7bd0e1918c3aaf2ee061f4'
@@ -285,11 +285,10 @@ sha256sums=('f81d59477e90a130857ce18dc02f4fbe5725854911db1e7ba770c7cd350f96a7'
             'c3f59316c841bb3fa02af61f62080deacbc0850787729c0ff536d86a64693623'
             '17db02391a629438494d1a606491463c7291dbe74be225d4d4c90003055736c6'
             '98fb4b9d4d7fe5957e566186892b10e3b3026450ee56d7bd335b74de3abae43d'
-	    '9c5a586a53d6becdab560226adea14c1db5e5a0ab8e3ffd75f894827c1b08365'
-	    '5ac0d9fb774ed038c5537c59836b389bb64bdb50a01f32d0ee8ae03159ca9198'
+            '9c5a586a53d6becdab560226adea14c1db5e5a0ab8e3ffd75f894827c1b08365'
+            '5ac0d9fb774ed038c5537c59836b389bb64bdb50a01f32d0ee8ae03159ca9198'
             'f51c1b8709bf9f0e642ebd12d48ee1ac41047902a87cf6a783ca794cfa5142dc'
             '37b86ca3de148a34258e3176dbf41488d9dbd19e93adbd22a062b3c41332ce85'
-	    '2454c1ee5e0f5aa119fafb4c8d3b402c5e4e10b2e868fe3e4ced3b1e2aa48446'
             'c08d12c699398ef88b764be1837b9ee11f2efd3188bd1bf4e8f85dfbeee58148'
             '2fc534377b4059faa3291a93f193f77f44e7a20237d8c4528d8828f48fc94c7f'
             '61abfab9093bdfec4edda3586fd05afe2f488a92ca99cff51c36b359acdcc815'
@@ -312,33 +311,33 @@ sha256sums=('f81d59477e90a130857ce18dc02f4fbe5725854911db1e7ba770c7cd350f96a7'
             'e9f22cbb542591087d2d66dc6dc912b1434330ba3cd13d2df741d869a2c31e89'
             '27471eee564ca3149dd271b0817719b5565a9594dc4d884fe3dc51a5f03832bc'
             '60e295601e4fb33d9bf65f198c54c7eb07c0d1e91e2ad1e0dd6cd6e142cb266d'
-            '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef'
-	    '6a07ad7af129d54a3289bea40524855c1527f5b15d36108102db575d07930932'
-            '9f7177679c8d3f8d699ef0566a51349d828436dba04603bc2223f98c60d2d178'
-	    '313cd41a04c6ce9adeba271f6abf9497a8bf75b78e2250ea66c42d6fa08aface'
-	    '5823f09b2891dc20c2a881c87a0cacf54f7cdd4866742430a4f4dadf65ab9724'
-	    '59ee7ee7470afae4dd4901cfe53b8e18da9a101d4ffbbae7547861aaa6f25ed2'
-	    'bd0ee8943bb097c326b83b761cc5ef25d5c433c48f0f191f59710fffff119b55'
-	    '2bee2188bd1f914459f9477e5c29b63f4d722d09bbe344bfde9b9b60687361e6'
-	    )
+            '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef')
 prepare() {
   #mv "${srcdir}/linux-${_git}" "${srcdir}/linux-${_basekernel}"
   #mv "${srcdir}/linux-${_basekernel}-${_rc}" "${srcdir}/linux-${_basekernel}"
   cd "${srcdir}/linux-${_basekernel}"
 
+  
+
+  #ck-MANJARO patches
+
+      # MuQSS patch
+  patch -p1 -i '../4.14-sched-MuQSS_162.patch'
+      # gcc optimization
+  patch -p1 -i '../enable_additional_cpu_optimizations_for_gcc_v8.1%2B_kernel_v4.13%2B.patch'
+
+
+
+
+
   # add upstream patch
-  patch -p1 -i "${srcdir}/patch-${pkgver}"
+  patch -p1 -i "${srcdir}/patch-${_basekernel}.${_sub}"
   chmod +x tools/objtool/sync-check.sh # GNU patch doesn't support git-style file mode
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
   # enable only if you have "gen-stable-queue-patch.sh" executed before
   #patch -Np1 -i "${srcdir}/prepatch-${_basekernel}.patch"
-
-  # MuQSS patch
-  patch -p1 -i '../4.14-sched-MuQSS_162.patch'
-  # gcc optimization
-  patch -p1 -i '../enable_additional_cpu_optimizations_for_gcc_v8.1%2B_kernel_v4.13%2B.patch'
 
   # gcc8 ojtool patches
   msg "gcc8 objtool patches..."
@@ -404,26 +403,26 @@ prepare() {
   #patch -Np1 -i "${srcdir}/0001-BFQ-${_bfq}-v${pkgver}.patch"
   patch -Np1 -i "${srcdir}/0001-BFQ-${_bfq}-${_bfqdate}.patch"
   patch -Np1 -i "${srcdir}/0002-BFQ-${_bfq}-${_bfqdate2}.patch"
-  
+
   if [ "${CARCH}" = "x86_64" ]; then
-    cat "${srcdir}/config.x86_64${manufact}" > ./.config
+    cat "${srcdir}/config.x86_64.${manufact}" > ./.config
   else
-	  cat "${srcdir}/config${manufact}" > ./.config
+	  cat "${srcdir}/config.${manufact}" > ./.config
   fi
 
   cat "${srcdir}/config.aufs" >> ./.config
 
   #patch .config for cpu optimization using architect string
-    sed -i -e "s/# CONFIG_${architect} is not set/CONFIG_${architect}=y/g" ./.config
+  sed -i -e "s/# CONFIG_${architect} is not set/CONFIG_${architect}=y/g" ./.config
 
   if [ "${_kernelname}" != "" ]; then
     sed -i "s|CONFIG_LOCALVERSION=.*|CONFIG_LOCALVERSION=\"${_kernelname}\"|g" ./.config
-#    sed -i "s|CONFIG_LOCALVERSION_AUTO=.*|CONFIG_LOCALVERSION_AUTO=n|" ./.config
+    sed -i "s|CONFIG_LOCALVERSION_AUTO=.*|CONFIG_LOCALVERSION_AUTO=n|" ./.config
   fi
 
   # set extraversion to pkgrel
   sed -ri "s|^(EXTRAVERSION =).*|\1 -${pkgrel}|" Makefile
-    
+
   # don't run depmod on 'make install'. We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
 
@@ -466,17 +465,17 @@ package_ck-linux414() {
 
   mkdir -p "${pkgdir}"/{boot,usr/lib/modules}
   make LOCALVERSION= INSTALL_MOD_PATH="${pkgdir}/usr" modules_install
-  cp arch/$KARCH/boot/bzImage "${pkgdir}/boot/vmlinuz-${_basekernel}-${CARCH}"
+  cp arch/$KARCH/boot/bzImage "${pkgdir}/boot/vmlinuz-${_basekernel}${_kernelname}-${CARCH}"
 
   # add kernel version
   if [ "${CARCH}" = "x86_64" ]; then
-     echo "${pkgver}-${pkgrel}-MANJARO x64" > "${pkgdir}/boot/${pkgbase}-${CARCH}.kver"
+	  echo "${pkgver}-${pkgrel}${_kernelname} x64" > "${pkgdir}/boot/${pkgbase}-${CARCH}.kver"
   else
-     echo "${pkgver}-${pkgrel}-MANJARO x32" > "${pkgdir}/boot/${pkgbase}-${CARCH}.kver"
+     echo "${pkgver}-${pkgrel}${_kernelname} x32" > "${pkgdir}/boot/${pkgbase}-${CARCH}.kver"
   fi
 
   # make room for external modules
-  local _extramodules="extramodules-${_basekernel}${_kernelname:--MANJARO}"
+  local _extramodules="extramodules-${_basekernel}${_kernelname}"
   ln -s "../${_extramodules}" "${pkgdir}/usr/lib/modules/${_kernver}/extramodules"
 
   # add real version for building modules and running depmod from hook

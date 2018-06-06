@@ -31,9 +31,9 @@
 #  27. Native optimizations autodetected by GCC (MNATIVE)
 
 #put your choice from the above list here 
-subarch=7
+subarch=3
 
 # If you would like to use my custom kernel choose custom=1 here otherwise choose custom=2 for mostly MANJARO config
-custom=1
+custom=2
 
 . ./PKGBUILD

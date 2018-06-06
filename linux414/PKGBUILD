@@ -38,9 +38,7 @@
 #  26. Generic-x86-64 (GENERIC_CPU)
 #  27. Native optimizations autodetected by GCC (MNATIVE)
 
-#put your choice from the above list here 
-subarch=20
-
+# Check that subarch is within the correct range
 while true; do
     case $subarch in
 	    [1-9]) break
@@ -49,7 +47,7 @@ while true; do
 	    ;;
             2[0-7]) break
 	    ;;
-            * ) echo "Enter only numbers 1-27!"; exit
+            * ) echo "Enter only numbers 1-27 in the subarch specific PKGBUILD file!"; exit
             ;;
     esac
 done
@@ -87,7 +85,7 @@ while true; do
                    fi
 		;;
 
-	        *) echo "Please enter 1 or 2 only in the PKGBUILD file!"; exit
+	        *) echo "Please enter 1 or 2 only in the subarch specific PKGBUILD file!"; exit
 		;;
         esac
 done
@@ -182,8 +180,7 @@ echo $manufact
 
 
 echo
-echo "You chose architecture ${architect}"
-echo "You chose option ${custom} for your configuration"
+echo "Building for  ${architect}..."
 echo
 
 pkgbase=ck-linux414
@@ -272,10 +269,10 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/linux-${_basekernel}.tar.x
 
 sha256sums=('f81d59477e90a130857ce18dc02f4fbe5725854911db1e7ba770c7cd350f96a7'
             '2c4dddd0e4b43b6aefd65dcd99db1d3c063c1a3455450f74bcad05a40c9ed024'
-            '11861422af1696429c4310c05795ae4e16e7804db46d55e569ddd93397e87bdd'
+            '4f81147a6ab5ec143a5e128b377abc9419597ebb0767c27cde10be2034ac65d4'
             '03bcfef52aea8159563d31b1012d6bcfff6b79d216d02b989c0b913612a9be68'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
-            '43942683a7ff01b180dff7f3de2db4885d43ab3d4e7bd0e1918c3aaf2ee061f4'
+            '7de294ad80322b740a35410fbcdc26af25e33d67bb527af67184f691aebf3ac8'
             'ae2e95db94ef7176207c690224169594d49445e04249d2499e9d2fbc117a0b21'
             '90831589b7ab43d6fab11bfa3ad788db14ba77ea4dc03d10ee29ad07194691e1'
             '6c612f67c19cb9e7e9cd98e4405e65b2baada7e1707a2da8d324c7a3f8b5fc78'
@@ -311,7 +308,15 @@ sha256sums=('f81d59477e90a130857ce18dc02f4fbe5725854911db1e7ba770c7cd350f96a7'
             'e9f22cbb542591087d2d66dc6dc912b1434330ba3cd13d2df741d869a2c31e89'
             '27471eee564ca3149dd271b0817719b5565a9594dc4d884fe3dc51a5f03832bc'
             '60e295601e4fb33d9bf65f198c54c7eb07c0d1e91e2ad1e0dd6cd6e142cb266d'
-            '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef')
+            '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef'
+            '6a07ad7af129d54a3289bea40524855c1527f5b15d36108102db575d07930932'
+            '9f7177679c8d3f8d699ef0566a51349d828436dba04603bc2223f98c60d2d178'
+            '313cd41a04c6ce9adeba271f6abf9497a8bf75b78e2250ea66c42d6fa08aface'
+            '5823f09b2891dc20c2a881c87a0cacf54f7cdd4866742430a4f4dadf65ab9724'
+            '59ee7ee7470afae4dd4901cfe53b8e18da9a101d4ffbbae7547861aaa6f25ed2'
+            'bd0ee8943bb097c326b83b761cc5ef25d5c433c48f0f191f59710fffff119b55'
+            '2bee2188bd1f914459f9477e5c29b63f4d722d09bbe344bfde9b9b60687361e6')
+
 prepare() {
   #mv "${srcdir}/linux-${_git}" "${srcdir}/linux-${_basekernel}"
   #mv "${srcdir}/linux-${_basekernel}-${_rc}" "${srcdir}/linux-${_basekernel}"

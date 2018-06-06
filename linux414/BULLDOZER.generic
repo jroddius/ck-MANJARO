@@ -34,6 +34,6 @@
 subarch=7
 
 # If you would like to use my custom kernel choose custom=1 here otherwise choose custom=2 for mostly MANJARO config
-custom=1
+custom=2
 
 . ./PKGBUILD
